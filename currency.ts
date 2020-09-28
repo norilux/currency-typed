@@ -1,5 +1,3 @@
-import validate = WebAssembly.validate;
-
 const defaults = {
     symbol: '$',
     separator: ',',
@@ -25,6 +23,9 @@ const vedicRegex = /(\d)(?=(\d\d)+\d\b)/g;
  */
 function Currency(value, opts) {
     let then = this;
+
+    // It will only call with `new`
+    //
     // if(!(then instanceof Currency)) {
     //     return new Currency(value, opts);
     // }
@@ -91,7 +92,8 @@ Currency.prototype = {
      */
     add(number) {
         let { intValue, _settings, _precision } = this;
-        return Currency((intValue += parse(number, _settings)) / _precision, _settings);
+
+        return new Currency((intValue += parse(number, _settings)) / _precision, _settings);
     },
 
     /**
@@ -101,7 +103,7 @@ Currency.prototype = {
      */
     subtract(number) {
         let { intValue, _settings, _precision } = this;
-        return Currency((intValue -= parse(number, _settings)) / _precision, _settings);
+        return new Currency((intValue -= parse(number, _settings)) / _precision, _settings);
     },
 
     /**
@@ -111,7 +113,7 @@ Currency.prototype = {
      */
     multiply(number) {
         let { intValue, _settings } = this;
-        return Currency((intValue *= number) / pow(_settings.precision), _settings);
+        return new Currency((intValue *= number) / pow(_settings.precision), _settings);
     },
 
     /**
@@ -121,7 +123,7 @@ Currency.prototype = {
      */
     divide(number) {
         let { intValue, _settings } = this;
-        return Currency(intValue /= parse(number, _settings, false), _settings);
+        return new Currency(intValue /= parse(number, _settings, false), _settings);
     },
 
     /**
